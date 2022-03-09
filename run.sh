@@ -1,8 +1,10 @@
 #!/bin/bash
 
-rm -rf lotus
-git clone https://github.com/filecoin-project/lotus.git
+# rm -rf lotus
+# git clone https://github.com/filecoin-project/lotus.git
 cd lotus
+git pull
+git reset --hard origin/master
 git checkout v1.14.4
 
 TAG=$(git rev-parse --short HEAD)

@@ -9,9 +9,7 @@ ENV SRC_DIR /lotus
 RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
-ENV http_proxy socks5://192.168.2.149:10086
-ENV https_proxy socks5://192.168.2.149:10086
-RUN curl ip.sb
+
 
 # RUN export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y

@@ -3,9 +3,9 @@
 FROM golang:1.17.8-buster
 MAINTAINER textile <contact@textile.io>
 
-ENV http_proxy 192.168.2.66:1080
-ENV https_proxy 192.168.2.66:1080
-ENV ALL_PROXY 192.168.2.66:1080
+ENV http_proxy 140.82.114.4:443
+ENV https_proxy 140.82.114.4:443
+ENV ALL_PROXY 140.82.114.4:443
 
 RUN curl www.google.com --max-time 3
 ENV SRC_DIR /lotus

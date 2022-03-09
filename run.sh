@@ -4,7 +4,6 @@
 # git clone https://github.com/filecoin-project/lotus.git
 cd lotus
 git pull
-git reset --hard origin/master
 git checkout v1.14.4
 
 TAG=$(git rev-parse --short HEAD)
@@ -20,7 +19,7 @@ TAG_VERSIONED=$(git describe --exact-match HEAD)
 RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
 cd ..
 
-docker build -t kaptinlin/lotus:$TAG -t kaptinlin/lotus:latest --build-arg http_proxy=socks5://192.168.2.66:1080 --build-arg https_proxy=socks5://192.168.2.66:1080 .
+docker build -t kaptinlin/lotus:$TAG -t kaptinlin/lotus:latest --build-arg http_proxy=socks5://192.168.2.66:1080 --build-arg https_proxy=socks5://192.168.2.66:1080 --network host .
 docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 docker push kaptinlin/lotus:$TAG
 docker push kaptinlin/lotus:latest

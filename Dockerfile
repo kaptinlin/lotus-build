@@ -5,7 +5,7 @@ MAINTAINER textile <contact@textile.io>
 
 RUN export all_proxy=socks5://192.168.2.149:10086
 
-RUN curl ip.sb --max-time 3
+RUN curl ip.sb
 
 ENV SRC_DIR /lotus
 

@@ -25,7 +25,7 @@ RUN set -x \
   && git checkout -q $SUEXEC_VERSION \
   && make \
   && cd /tmp \
-  && ALL_PROXY=socks5://192.168.2.149:10086 wget -q -O tini https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini \
+  && wget -q -O tini https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini \
   && chmod +x tini
 
 # Download packages first so they can be cached.
@@ -49,7 +49,7 @@ RUN cd $SRC_DIR \
   && mkdir $SRC_DIR/build \
   && . $HOME/.cargo/env \
   && make clean \
-  && ALL_PROXY=socks5://192.168.2.149:10086 FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
+  && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
 
 
 COPY lotus/ $SRC_DIR

@@ -8,7 +8,7 @@ ENV SRC_DIR /lotus
 RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
-RUN export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+# RUN export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Get su-exec, a very minimal tool for dropping privileges,
@@ -29,8 +29,8 @@ RUN set -x \
 COPY lotus/go.mod lotus/go.sum $SRC_DIR/
 COPY lotus/extern/ $SRC_DIR/extern/
 
-RUN export GO111MODULE=on
-RUN export GOPROXY=https://goproxy.cn
+# RUN export GO111MODULE=on
+# RUN export GOPROXY=https://goproxy.cn
 
 RUN cd $SRC_DIR \
   && go mod download

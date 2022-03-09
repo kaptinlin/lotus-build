@@ -3,9 +3,8 @@
 FROM golang:1.17.8-buster
 MAINTAINER textile <contact@textile.io>
 
-RUN export all_proxy=socks5://192.168.2.149:10086
-
-
+ENV http_proxy socks5://192.168.2.149:10086
+ENV https_proxy socks5://192.168.2.149:10086
 
 ENV SRC_DIR /lotus
 RUN curl ip.sb

@@ -47,10 +47,10 @@ COPY lotus/.gitmodules $SRC_DIR/
 RUN echo '[source.crates-io]' > ~/.cargo/config \
  && echo 'registry = "https://github.com/rust-lang/crates.io-index"'  >> ~/.cargo/config \
  && echo '# 替换成你偏好的镜像源'  >> ~/.cargo/config \
- && echo "replace-with = 'sjtu'"  >> ~/.cargo/config \
- && echo '# 上海交通大学'   >> ~/.cargo/config \
- && echo '[source.sjtu]'   >> ~/.cargo/config \
- && echo 'registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"'  >> ~/.cargo/config \
+ && echo "replace-with = 'rustcc'"  >> ~/.cargo/config \
+ && echo '# rustcc社区'   >> ~/.cargo/config \
+ && echo '[source.rustcc]'   >> ~/.cargo/config \
+ && echo 'registry = "https://code.aliyun.com/rustcc/crates.io-index.git"'  >> ~/.cargo/config \
  && echo '' >> ~/.cargo/config
 
 # Download dependence first

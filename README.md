@@ -9,4 +9,5 @@ The Dockerfile only defines a `CMD` so it can be overriden if that's useful for 
 ```
 git clone https://github.com/filecoin-project/lotus.git
 git submodule update --init --recursive
+docker tag kaptinlin/lotus:latest registry.cn-hangzhou.aliyuncs.com/kaptinlin/lotus:latest
 ```

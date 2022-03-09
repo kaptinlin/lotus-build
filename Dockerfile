@@ -2,9 +2,10 @@
 ### extra additions.
 FROM golang:1.17.8-buster
 MAINTAINER textile <contact@textile.io>
-RUN export ALL_PROXY=socks5://192.168.2.66:1080
-RUN export http_proxy=http://192.168.2.66:1080
-RUN export https_proxy=http://192.168.2.66:1080
+
+ENV http_proxy 192.168.2.66:1080
+ENV https_proxy 192.168.2.66:1080
+ENV ALL_PROXY 192.168.2.66:1080
 
 RUN curl www.google.com --max-time 3
 ENV SRC_DIR /lotus

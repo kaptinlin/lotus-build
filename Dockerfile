@@ -20,7 +20,7 @@ ENV SUEXEC_VERSION v0.2
 ENV TINI_VERSION v0.18.0
 RUN set -x \
   && cd /tmp \
-  && git clone https://github.com/ncopa/su-exec.git \
+  && ALL_PROXY=socks5://192.168.2.149:10086 git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec \
   && git checkout -q $SUEXEC_VERSION \
   && make \

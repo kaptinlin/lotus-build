@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-
 # RUN export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 
+RUN echo 'hello'
+
 # Get su-exec, a very minimal tool for dropping privileges,
 # and tini, a very minimal init daemon for containers
 ENV SUEXEC_VERSION v0.2

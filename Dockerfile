@@ -3,9 +3,7 @@
 FROM golang:1.17.8-buster
 MAINTAINER textile <contact@textile.io>
 
-# ENV http_proxy socks5://192.168.2.149:10086
-# ENV https_proxy socks5://192.168.2.149:10086
-# ENV ALL_PROXY socks5://192.168.2.149:10086
+ENV all_proxy socks5://192.168.2.149:10086
 
 ENV SRC_DIR /lotus
 

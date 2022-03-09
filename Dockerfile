@@ -27,6 +27,10 @@ RUN set -x \
 # Download packages first so they can be cached.
 COPY lotus/go.mod lotus/go.sum $SRC_DIR/
 COPY lotus/extern/ $SRC_DIR/extern/
+
+RUN go env -w GO111MODULE=on
+RUN go env -w  GOPROXY=https://goproxy.io,direct
+
 RUN cd $SRC_DIR \
   && go mod download
 

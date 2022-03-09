@@ -5,10 +5,10 @@ MAINTAINER textile <contact@textile.io>
 
 RUN export all_proxy=socks5://192.168.2.149:10086
 
-RUN curl ip.sb
+
 
 ENV SRC_DIR /lotus
-
+RUN curl ip.sb
 
 
 # RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list

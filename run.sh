@@ -19,7 +19,7 @@
 # RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
 # cd ..
 
-docker build -t kaptinlin/lotus:latest --build-arg all_proxy=socks5://192.168.2.149:10086 --network host .
+docker build -t kaptinlin/lotus:latest --build-arg all_proxy=socks5://192.168.2.149:10086
 docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 # docker push kaptinlin/lotus:$TAG
 docker push kaptinlin/lotus:latest

@@ -4,7 +4,7 @@
 git clone https://github.com/filecoin-project/lotus.git
 cd lotus
 # git pull
-# git checkout v1.14.4
+git checkout v1.14.4
 
 TAG=$(git rev-parse --short HEAD)
 if docker pull kaptinlin/lotus:$TAG > /dev/null; then

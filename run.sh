@@ -1,8 +1,8 @@
 #!/bin/bash
 
-rm -rf lotus
+# rm -rf lotus
 git clone https://github.com/filecoin-project/lotus.git
-# cd lotus
+cd lotus
 # git pull
 # git checkout v1.14.4
 

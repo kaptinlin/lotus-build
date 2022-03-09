@@ -29,8 +29,8 @@ RUN set -x \
 COPY lotus/go.mod lotus/go.sum $SRC_DIR/
 COPY lotus/extern/ $SRC_DIR/extern/
 
-RUN go env -w GO111MODULE=on
-RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+RUN export GO111MODULE=on
+RUN export GOPROXY=https://goproxy.cn
 
 RUN cd $SRC_DIR \
   && go mod download

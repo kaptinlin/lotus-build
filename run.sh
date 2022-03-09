@@ -20,7 +20,7 @@ TAG_VERSIONED=$(git describe --exact-match HEAD)
 RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
 cd ..
 
-docker build -t kaptinlin/lotus:$TAG -t kaptinlin/lotus:latest --build-arg http_proxy=http://192.168.2.66:1080 --build-arg https_proxy=http://192.168.2.66:1080 .
+docker build -t kaptinlin/lotus:$TAG -t kaptinlin/lotus:latest --build-arg http_proxy=socks5://192.168.2.66:1080 --build-arg https_proxy=socks5://192.168.2.66:1080 .
 docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 docker push kaptinlin/lotus:$TAG
 docker push kaptinlin/lotus:latest

@@ -3,6 +3,11 @@
 FROM golang:1.17.8-buster
 MAINTAINER textile <contact@textile.io>
 
+ENV http_proxy "http://192.168.2.66:1080"
+ENV HTTP_PROXY "http://192.168.2.66:1080"
+ENV https_proxy "http://192.168.2.66:1080"
+ENV HTTPS_PROXY "http://192.168.2.66:1080"
+RUN curl www.google.com --max-time 3
 ENV SRC_DIR /lotus
 
 RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list

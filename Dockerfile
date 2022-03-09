@@ -5,12 +5,14 @@ MAINTAINER textile <contact@textile.io>
 
 ENV SRC_DIR /lotus
 
-# RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list
-RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
-# RUN export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+RUN sed -i 's#http://deb.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
+    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
+    && apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
+
+ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
-
 
 # Get su-exec, a very minimal tool for dropping privileges,
 # and tini, a very minimal init daemon for containers
@@ -18,21 +20,21 @@ ENV SUEXEC_VERSION v0.2
 ENV TINI_VERSION v0.18.0
 RUN set -x \
   && cd /tmp \
-  && git clone https://github.com/ncopa/su-exec.git \
+  && ALL_PROXY=socks5://192.168.2.149:10086 git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec \
   && git checkout -q $SUEXEC_VERSION \
   && make \
   && cd /tmp \
-  && wget -q -O tini https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini \
+  && ALL_PROXY=socks5://192.168.2.149:10086 wget -q -O tini https://github.com/krallin/tini/releases/download/$TINI_VERSION/tini \
   && chmod +x tini
 
 # Download packages first so they can be cached.
 COPY lotus/go.mod lotus/go.sum $SRC_DIR/
 COPY lotus/extern/ $SRC_DIR/extern/
 
-# RUN export GO111MODULE=on
-# RUN export GOPROXY=https://goproxy.cn
-
+ARG GO111MODULE=on
+ARG GODEBUG=x509ignoreCN=0
+ARG GOPROXY=https://goproxy.cn,direct
 RUN cd $SRC_DIR \
   && go mod download
 
@@ -47,7 +49,7 @@ RUN cd $SRC_DIR \
   && mkdir $SRC_DIR/build \
   && . $HOME/.cargo/env \
   && make clean \
-  && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
+  && ALL_PROXY=socks5://192.168.2.149:10086 FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
 
 
 COPY lotus/ $SRC_DIR
@@ -57,7 +59,7 @@ ARG MAKE_TARGET=lotus
 # Build the thing.
 RUN cd $SRC_DIR \
   && . $HOME/.cargo/env \
-  && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
+  && ALL_PROXY=socks5://192.168.2.149:10086 FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
 
 # Now comes the actual target image, which aims to be as small as possible.
 FROM busybox:1.32.0-glibc

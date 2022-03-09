@@ -19,14 +19,14 @@
 # RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
 # cd ..
 
-docker build -t kaptinlin/lotus:$TAG -t kaptinlin/lotus:latest --build-arg HTTP_PROXY=socks5://192.168.2.149:10086 --build-arg HTTPS_PROXY=socks5://192.168.2.149:10086 --network host .
+docker build -t kaptinlin/lotus:latest --build-arg HTTP_PROXY=socks5://192.168.2.149:10086 --build-arg HTTPS_PROXY=socks5://192.168.2.149:10086 --network host .
 docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-docker push kaptinlin/lotus:$TAG
+# docker push kaptinlin/lotus:$TAG
 docker push kaptinlin/lotus:latest
 
-echo $TAG_VERSIONED
-if [ -n "$TAG_VERSIONED" ]
-then
-  docker build -t kaptinlin/lotus:$TAG_VERSIONED .
-  docker push kaptinlin/lotus:$TAG_VERSIONED
-fi
+# echo $TAG_VERSIONED
+# if [ -n "$TAG_VERSIONED" ]
+# then
+#   docker build -t kaptinlin/lotus:$TAG_VERSIONED .
+#   docker push kaptinlin/lotus:$TAG_VERSIONED
+# fi

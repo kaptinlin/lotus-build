@@ -20,7 +20,7 @@ ENV SUEXEC_VERSION v0.2
 ENV TINI_VERSION v0.18.0
 RUN set -x \
   && cd /tmp \
-  && ALL_PROXY=socks5://192.168.2.149:10086 git clone https://github.com/ncopa/su-exec.git \
+  && git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec \
   && git checkout -q $SUEXEC_VERSION \
   && make \
@@ -59,7 +59,7 @@ ARG MAKE_TARGET=lotus
 # Build the thing.
 RUN cd $SRC_DIR \
   && . $HOME/.cargo/env \
-  && ALL_PROXY=socks5://192.168.2.149:10086 FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
+  && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
 
 # Now comes the actual target image, which aims to be as small as possible.
 FROM busybox:1.32.0-glibc

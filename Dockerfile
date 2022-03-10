@@ -68,6 +68,11 @@ RUN cd $SRC_DIR \
   && . $HOME/.cargo/env \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
 
+# Build the thing.
+RUN cd $SRC_DIR \
+  && . $HOME/.cargo/env \
+  && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make lotus-shed
+
 # Now comes the actual target image, which aims to be as small as possible.
 FROM busybox:1.32.0-glibc
 MAINTAINER textile <filecoin@textile.io>
@@ -75,6 +80,7 @@ MAINTAINER textile <filecoin@textile.io>
 # Get the executable binary and TLS CAs from the build container.
 ENV SRC_DIR /lotus
 COPY --from=0 $SRC_DIR/lotus /usr/local/bin/lotus
+COPY --from=0 $SRC_DIR/lotus-shed /usr/local/bin/lotus-shed
 COPY --from=0 /tmp/su-exec/su-exec /sbin/su-exec
 COPY --from=0 /tmp/tini /sbin/tini
 COPY --from=0 /etc/ssl/certs /etc/ssl/certs
@@ -90,6 +96,10 @@ COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/libgcc_s.so.1
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so.5 /lib/libhwloc.so.5
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libnuma.so.1 /lib/libnuma.so.1
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libltdl.so.7 /lib/libltdl.so.7
+
+COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so /lib/libhwloc.so
+COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so.15 /lib/libhwloc.so.15
+COPY --from=0 /usr/lib/x86_64-linux-gnu/libudev.so.1 /lib/libudev.so.1
 
 # WS port
 EXPOSE 1235

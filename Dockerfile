@@ -99,7 +99,7 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/libltdl.so.7 /lib/libltdl.so.7
 
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so /lib/libhwloc.so
 # COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so.15 /lib/libhwloc.so.15
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libudev.so.1 /lib/libudev.so.1
+# COPY --from=0 /usr/lib/x86_64-linux-gnu/libudev.so.1 /lib/libudev.so.1
 
 # WS port
 EXPOSE 1235

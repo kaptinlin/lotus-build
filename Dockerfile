@@ -1,6 +1,6 @@
 ### Based on ldoublewood <ldoublewood@gmail.com> original Dockerfile, with 
 ### extra additions.
-FROM golang:1.17.8-buster
+FROM golang:1.17.9-buster
 MAINTAINER textile <contact@textile.io>
 
 ENV SRC_DIR /lotus
@@ -20,7 +20,7 @@ ENV SUEXEC_VERSION v0.2
 ENV TINI_VERSION v0.18.0
 RUN set -x \
   && cd /tmp \
-  && ALL_PROXY=socks5://192.168.2.149:10086 git clone https://github.com/ncopa/su-exec.git \
+  && git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec \
   && git checkout -q $SUEXEC_VERSION \
   && make \

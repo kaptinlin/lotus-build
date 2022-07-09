@@ -6,12 +6,12 @@ MAINTAINER textile <contact@textile.io>
 ENV SRC_DIR /lotus
 
 
-RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list \
-    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
-    && apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
+# RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list \
+#    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
+RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
-ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
-ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+# ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+# ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Get su-exec, a very minimal tool for dropping privileges,
@@ -34,7 +34,7 @@ COPY lotus/extern/ $SRC_DIR/extern/
 
 ARG GO111MODULE=on
 ARG GODEBUG=x509ignoreCN=0
-ARG GOPROXY=https://goproxy.cn,direct
+# ARG GOPROXY=https://goproxy.cn,direct
 RUN cd $SRC_DIR \
   && go mod download
 
@@ -44,12 +44,12 @@ COPY lotus/Makefile $SRC_DIR
 COPY lotus/.git/ $SRC_DIR/.git/
 COPY lotus/.gitmodules $SRC_DIR/
 
-RUN echo '[source.crates-io]' > ~/.cargo/config \
- && echo 'registry = "https://github.com/rust-lang/crates.io-index"'  >> ~/.cargo/config \
- && echo "replace-with = 'sjtu'"  >> ~/.cargo/config \
- && echo '[source.sjtu]'   >> ~/.cargo/config \
- && echo 'registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"'  >> ~/.cargo/config \
- && echo '' >> ~/.cargo/config
+# RUN echo '[source.crates-io]' > ~/.cargo/config \
+# && echo 'registry = "https://github.com/rust-lang/crates.io-index"'  >> ~/.cargo/config \
+# && echo "replace-with = 'sjtu'"  >> ~/.cargo/config \
+# && echo '[source.sjtu]'   >> ~/.cargo/config \
+# && echo 'registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"'  >> ~/.cargo/config \
+# && echo '' >> ~/.cargo/config
 
 # Download dependence first
 RUN cd $SRC_DIR \

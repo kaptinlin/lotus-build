@@ -8,8 +8,8 @@ git checkout v1.16.1
 
 echo "Building image..."
 
-RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
-cd ..
+# RUSTFLAGS="-C target-cpu=native" FFI_BUILD_FROM_SOURCE=1 make deps
+# cd ..
 
 docker build -t kaptinlin/lotus:latest --network host .
 # docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD

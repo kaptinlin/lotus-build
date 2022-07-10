@@ -8,11 +8,23 @@ ENV SRC_DIR /lotus
 
 # RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list \
 #    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
-RUN apt-get update && apt-get install -y ca-certificates llvm clang mesa-opencl-icd ocl-icd-opencl-dev jq hwloc libhwloc-dev 
+RUN apt-get update && apt-get install -y ca-certificates build-essential llvm clang mesa-opencl-icd ocl-icd-libopencl1 ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
+ARG RUST_VERSION=nightly
 # ENV RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
 # ENV RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
-RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
+
+RUN wget "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
+    chmod +x rustup-init; \
+    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION; \
+    rm rustup-init; \
+    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
+    rustup --version; \
+    cargo --version; \
+    rustc --version;
 
 # Get su-exec, a very minimal tool for dropping privileges,
 # and tini, a very minimal init daemon for containers
@@ -32,8 +44,8 @@ RUN set -x \
 COPY lotus/go.mod lotus/go.sum $SRC_DIR/
 COPY lotus/extern/ $SRC_DIR/extern/
 
-ARG GO111MODULE=on
-ARG GODEBUG=x509ignoreCN=0
+# ARG GO111MODULE=on
+# ARG GODEBUG=x509ignoreCN=0
 # ARG GOPROXY=https://goproxy.cn,direct
 RUN cd $SRC_DIR \
   && go mod download

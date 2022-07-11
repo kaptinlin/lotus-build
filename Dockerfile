@@ -59,7 +59,7 @@ COPY lotus/.gitmodules $SRC_DIR/
 # Download dependence first
 RUN cd $SRC_DIR \
   && mkdir $SRC_DIR/build \
-  && . $HOME/.cargo/env \
+  # && . $HOME/.cargo/env \
   && make clean \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
 
@@ -70,12 +70,12 @@ ARG MAKE_TARGET=lotus
 
 # Build the thing.
 RUN cd $SRC_DIR \
-  && . $HOME/.cargo/env \
+  # && . $HOME/.cargo/env \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make $MAKE_TARGET
 
 # Build the thing.
 RUN cd $SRC_DIR \
-  && . $HOME/.cargo/env \
+  # && . $HOME/.cargo/env \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make lotus-shed
 
 # Now comes the actual target image, which aims to be as small as possible.

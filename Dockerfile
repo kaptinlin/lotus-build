@@ -1,6 +1,6 @@
 ### Based on ldoublewood <ldoublewood@gmail.com> original Dockerfile, with 
 ### extra additions.
-FROM golang:1.18.1-buster
+FROM golang:1.18.8-buster
 MAINTAINER textile <contact@textile.io>
 
 ENV SRC_DIR /lotus

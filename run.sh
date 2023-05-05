@@ -4,7 +4,7 @@
 git clone https://github.com/filecoin-project/lotus.git
 cd lotus
 # # git pull
-git checkout v1.20.0
+git checkout v1.23.0
 
 echo "Building image..."
 

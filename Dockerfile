@@ -92,17 +92,16 @@ COPY --from=0 /etc/ssl/certs /etc/ssl/certs
 
 
 # This shared lib (part of glibc) doesn't seem to be included with busybox.
-COPY --from=0 /lib/x86_64-linux-gnu/libdl-2.28.so /lib/libdl.so.2
-COPY --from=0 /lib/x86_64-linux-gnu/libutil-2.28.so /lib/libutil.so.1 
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libOpenCL.so.1.0.0 /lib/libOpenCL.so.1
-COPY --from=0 /usr/lib/gcc/x86_64-linux-gnu/8/libstdc++.so /lib/libstdc++.so.6
+COPY --from=0 /lib/*/libdl.so.2 /lib/
+COPY --from=0 /lib/*/libutil.so.1 /lib/
+COPY --from=0 /usr/lib/*/libOpenCL.so.1.0.0 /lib/
+COPY --from=0 /usr/lib/*/libOpenCL.so.1 /lib/
+#COPY --from=0 /usr/lib/gcc/x86_64-linux-gnu/8/libstdc++.so /lib/libstdc++.so.6
 COPY --from=0 /lib/*/librt.so.1 /lib/
-COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/libgcc_s.so.1
+COPY --from=0 /lib/*/libgcc_s.so.1  /lib/
+COPY --from=0 /usr/lib/*/libnuma.so.1 /lib/
+COPY --from=0 /usr/lib/*/libltdl.so.7   /lib/
 COPY --from=0 /usr/lib/*/libhwloc.so.*  /lib/
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libnuma.so.1 /lib/libnuma.so.1
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libltdl.so.7 /lib/libltdl.so.7
-# COPY --from=0 /usr/lib/x86_64-linux-gnu/libhwloc.so.15 /lib/libhwloc.so.15
-# COPY --from=0 /usr/lib/x86_64-linux-gnu/libudev.so.1 /lib/libudev.so.1
 
 # WS port
 EXPOSE 1235

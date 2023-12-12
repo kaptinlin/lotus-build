@@ -81,8 +81,7 @@ RUN cd $SRC_DIR \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make lotus-shed
 
 # Now comes the actual target image, which aims to be as small as possible.
-FROM busybox:1.32.0-glibc
-MAINTAINER textile <filecoin@textile.io>
+FROM ubuntu:20.04 AS lotus-base
 
 # Get the executable binary and TLS CAs from the build container.
 ENV SRC_DIR /lotus
@@ -90,20 +89,17 @@ COPY --from=0 $SRC_DIR/lotus /usr/local/bin/lotus
 COPY --from=0 $SRC_DIR/lotus-shed /usr/local/bin/lotus-shed
 COPY --from=0 /tmp/su-exec/su-exec /sbin/su-exec
 COPY --from=0 /tmp/tini /sbin/tini
-COPY --from=0 /etc/ssl/certs /etc/ssl/certs
 
-
-# This shared lib (part of glibc) doesn't seem to be included with busybox.
-COPY --from=0 /lib/*/libdl.so.2 /lib/
-COPY --from=0 /lib/*/libutil.so.1 /lib/
-COPY --from=0 /usr/lib/*/libOpenCL.so.1.0.0 /lib/
-COPY --from=0 /usr/lib/*/libOpenCL.so.1 /lib/
-#COPY --from=0 /usr/lib/gcc/x86_64-linux-gnu/8/libstdc++.so /lib/libstdc++.so.6
-COPY --from=0 /lib/*/librt.so.1 /lib/
-COPY --from=0 /lib/*/libgcc_s.so.1  /lib/
-COPY --from=0 /usr/lib/*/libnuma.so.1 /lib/
+# Base resources
+COPY --from=0 /etc/ssl/certs                           /etc/ssl/certs
+COPY --from=0 /lib/*/libdl.so.2         /lib/
+COPY --from=0 /lib/*/librt.so.1         /lib/
+COPY --from=0 /lib/*/libgcc_s.so.1      /lib/
+COPY --from=0 /lib/*/libutil.so.1       /lib/
 COPY --from=0 /usr/lib/*/libltdl.so.7   /lib/
+COPY --from=0 /usr/lib/*/libnuma.so.1   /lib/
 COPY --from=0 /usr/lib/*/libhwloc.so.*  /lib/
+COPY --from=0 /usr/lib/*/libOpenCL.so.1 /lib/
 
 # WS port
 EXPOSE 1235

@@ -106,15 +106,16 @@ EXPOSE 1235
 # P2P port
 EXPOSE 5678
 
-
 # Create the home directory and switch to a non-privileged user.
 ENV HOME_PATH /data
 ENV PARAMCACHE_PATH /var/tmp/filecoin-proof-parameters
 
-RUN mkdir -p $HOME_PATH $PARAMCACHE_PATH \
-  && adduser -D -h $HOME_PATH -u 1000 -G users lotus \
-  && chown lotus:users $HOME_PATH $PARAMCACHE_PATH
+RUN groupadd -f users
 
+
+RUN mkdir -p $HOME_PATH $PARAMCACHE_PATH \
+  && adduser --uid 1000 --ingroup users --home $HOME_PATH --disabled-password --gecos "" lotus \
+  && chown -R lotus:users $HOME_PATH $PARAMCACHE_PATH
 
 VOLUME $HOME_PATH
 VOLUME $PARAMCACHE_PATH

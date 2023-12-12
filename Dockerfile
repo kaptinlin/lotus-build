@@ -8,8 +8,8 @@ ENV SRC_DIR /lotus
 
 # RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list \
 #    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
-RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
-RUN sed -i 's/http:/https:/g' /etc/apt/sources.list
+#RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
+#RUN sed -i 's/http:/https:/g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates build-essential llvm clang mesa-opencl-icd ocl-icd-libopencl1 ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
 ARG RUST_VERSION=nightly
@@ -19,8 +19,8 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH
 
-#RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
-RUN curl -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y
+#RUN curl -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Get su-exec, a very minimal tool for dropping privileges,
 # and tini, a very minimal init daemon for containers
@@ -52,15 +52,12 @@ COPY lotus/Makefile $SRC_DIR
 COPY lotus/.git/ $SRC_DIR/.git/
 COPY lotus/.gitmodules $SRC_DIR/
 
-RUN echo '[source.crates-io]' > ~/.cargo/config \
-  && echo 'registry = "https://github.com/rust-lang/crates.io-index"'  >> ~/.cargo/config \
-  && echo "replace-with = 'sjtu'"  >> ~/.cargo/config \
-  && echo '[source.sjtu]'   >> ~/.cargo/config \
-  && echo 'registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"'  >> ~/.cargo/config \
-  && echo '' >> ~/.cargo/config
-
-
-
+#RUN echo '[source.crates-io]' > ~/.cargo/config \
+#  && echo 'registry = "https://github.com/rust-lang/crates.io-index"'  >> ~/.cargo/config \
+#  && echo "replace-with = 'sjtu'"  >> ~/.cargo/config \
+#  && echo '[source.sjtu]'   >> ~/.cargo/config \
+#  && echo 'registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"'  >> ~/.cargo/config \
+#  && echo '' >> ~/.cargo/config
 
 # Download dependence first
 RUN cd $SRC_DIR \
@@ -68,7 +65,6 @@ RUN cd $SRC_DIR \
   # && . $HOME/.cargo/env \
   && make clean \
   && FFI_BUILD_FROM_SOURCE=1 RUSTFLAGS="-C target-cpu=native -g" CGO_CFLAGS="-D__BLST_PORTABLE__" make deps
-
 
 COPY lotus/ $SRC_DIR
 

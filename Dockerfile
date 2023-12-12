@@ -8,6 +8,8 @@ ENV SRC_DIR /lotus
 
 # RUN sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list \
 #    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
+RUN sed -i 's/http:/https:/g' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates build-essential llvm clang mesa-opencl-icd ocl-icd-libopencl1 ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
 ARG RUST_VERSION=nightly

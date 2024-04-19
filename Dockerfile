@@ -10,9 +10,9 @@ ENV SRC_DIR /lotus
 #    && sed -i 's#http://security.debian.org#https://mirrors.tuna.tsinghua.edu.cn#g' /etc/apt/sources.list \
 #RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
 #RUN sed -i 's/http:/https:/g' /etc/apt/sources.list
-RUN apt-get update && apt-get install -y ca-certificates build-essential llvm clang mesa-opencl-icd ocl-icd-libopencl1 ocl-icd-opencl-dev jq hwloc libhwloc-dev 
+RUN apt-get update && apt-get install -y ca-certificates build-essential clang llvm libclang-dev mesa-opencl-icd ocl-icd-libopencl1 ocl-icd-opencl-dev jq hwloc libhwloc-dev 
 
-ARG RUST_VERSION=nightly
+ARG RUST_VERSION=1.63.0
 # ENV RUSTUP_DIST_SERVER=https://rsproxy.cn
 # ENV RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -20,7 +20,25 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     PATH=/usr/local/cargo/bin:$PATH
 
 #RUN curl -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y
-RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
+# RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
+
+RUN set -eux; \
+    dpkgArch="$(dpkg --print-architecture)"; \
+    case "${dpkgArch##*-}" in \
+        amd64) rustArch='x86_64-unknown-linux-gnu' ;; \
+        arm64) rustArch='aarch64-unknown-linux-gnu' ;; \
+        *) echo >&2 "unsupported architecture: ${dpkgArch}"; exit 1 ;; \
+    esac; \
+    url="https://static.rust-lang.org/rustup/archive/1.25.1/${rustArch}/rustup-init"; \
+    wget "$url"; \
+    chmod +x rustup-init; \
+    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION --default-host ${rustArch}; \
+    rm rustup-init; \
+    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
+    rustup --version; \
+    cargo --version; \
+    rustc --version;
+
 
 # Get su-exec, a very minimal tool for dropping privileges,
 # and tini, a very minimal init daemon for containers
